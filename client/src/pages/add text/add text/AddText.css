@@ -9,8 +9,9 @@
 }
 
 .header{
-    width: 1600px;
+    width: 1500px;
     height: 250px;
+    border: 5px solid gray;
     margin: 0 auto;
     background: url("../../../Images/h.jpg");
 }
