@@ -5,14 +5,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Login from "./pages/login/Login";
 import AddText from "./pages/add text/add text/AddText";
-import Register from "./pages/register/Register";
+
+import Document from './pages/tableDocument/DocumentTable';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     {/*<App />*/}
-      <Register />
-      {/*<AddText />*/}
+
+      <Document />
+    {/*  <AddText />*/}
   </React.StrictMode>
 );
 
