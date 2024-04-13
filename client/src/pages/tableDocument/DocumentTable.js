@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+import { Table, TableBody, TableCell,List, ListItem, ListItemText, TableContainer, TableHead, TableRow, Paper, TextField, Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import axios from 'axios';
 
 function Document() {
     const [documents, setDocuments] = useState([]);
+    const [documentFilter, setDocumentsFilter] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [symbolNumber, setSymbolNumber] = useState("");
     const [field, setField] = useState("");
@@ -17,9 +18,15 @@ function Document() {
             .then(data => setDocuments(data))
             .catch(error => console.error('Error fetching documents:', error));
     }, []);
+    useEffect(() => {
+        fetch('http://localhost:8080/api/doc/getAll')
+            .then(response => response.json())
+            .then(data => setDocumentsFilter(data))
+            .catch(error => console.error('Error fetching documents:', error));
+    }, []);
 
     const handleSearch = () => {
-        const filteredDocuments = documents.filter(document => {
+        const filteredDocuments = documentFilter.filter(document => {
             const conditions = [];
             if (symbolNumber) conditions.push(document.symbolNumber.includes(symbolNumber));
             if (field) conditions.push(document.field.includes(field));
@@ -39,7 +46,7 @@ function Document() {
     };
     
     const handleVersion = (symbolNumber) => {
-        const filteredDocuments = documents.filter(document => {
+        const filteredDocuments = documentFilter.filter(document => {
             return (
                 document.symbolNumber.includes(symbolNumber)
             );
@@ -53,6 +60,7 @@ function Document() {
         setDocumentToDelete(id);
         setConfirmDelete(true);
     };
+    
     const confirmDeleteHandler = () => {
     axios.delete(`http://localhost:8080/api/doc/delete/${documentToDelete}`)
         .then(response => {
@@ -81,10 +89,27 @@ function Document() {
         window.location.reload();
 
     };
+    const sortByIssuing = (issuing) => {
+        console.log(issuing +"1")
+        const filteredDocuments = documentFilter.filter(document => {
+            console.log(document.issuingAuthority)
+            return (
+                document.issuingAuthority.includes(issuing)
+              
+            );
+           
+        });
+        
+        setDocuments(filteredDocuments);
+    
+    };
+ 
 
     return (
+        
         <div>
             <h3>Search Documents</h3>
+      
             <Grid container spacing={1} alignItems="center" style={{ marginBottom: "20px", background: "#f9f9f9", height: "70%" }}>
                 <Grid item xs={12} sm={6}>
                     <Grid container spacing={1}>
@@ -163,6 +188,21 @@ function Document() {
                     <Button variant="contained" style={{margin:"10px"}} onClick={handleSearch}>Search</Button>
                 </Grid>
             </Grid>
+            <h2>Issuing Authority</h2>
+            <Table>
+            <TableRow>
+                <TableCell onClick={() => sortByIssuing("VĂN PHÒNG UBND TỈNH")}>VĂN PHÒNG UBND TỈNH</TableCell>
+                <TableCell onClick={() => sortByIssuing("SỞ KẾ HOẠCH VÀ ĐẦU TƯ")}>SỞ KẾ HOẠCH VÀ ĐẦU TƯ</TableCell>
+                <TableCell onClick={() => sortByIssuing("SỞ NỘI VỤ")}>SỞ NỘI VỤ</TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell onClick={() => sortByIssuing("SỞ TƯ PHÁP")}>SỞ TƯ PHÁP</TableCell>
+                <TableCell onClick={() => sortByIssuing("SỞ CÔNG THƯƠNG")}>SỞ CÔNG THƯƠNG</TableCell>
+                <TableCell onClick={() => sortByIssuing("SỞ GIAO THÔNG VẬN TẢI")}>SỞ GIAO THÔNG VẬN TẢI</TableCell>
+            </TableRow>
+            </Table>
+           
+    
             <h2>All Documents</h2>
             <Button variant="contained" color="primary" style={{margin:"10px"}} size="small" onClick={() => handleReload()}>Reaload</Button>
             <TableContainer component={Paper}>
@@ -186,7 +226,7 @@ function Document() {
                                 <TableCell>{document.date}</TableCell>
                                 <TableCell>
                                     <p>{document.describeOfDoc}</p>
-                                    <a href={document.fileUrl} target="_blank" rel="noopener noreferrer">{document.fileUrl}</a>
+                                    <a href={document.fileUrl} target="_blank" >{document.fileUrl}</a>
                                 </TableCell>
                                 <TableCell>{document.version}</TableCell>
                                 <TableCell>{document.issuingAuthority}</TableCell>
