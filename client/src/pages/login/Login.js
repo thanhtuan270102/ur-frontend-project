@@ -4,6 +4,9 @@ import "./Login.css";
 function Login() {
     return (
         <div className={"container"}>
+            <div className={"header"}>
+                {/*<Images/>*/}
+            </div>
             <div className={"content"}>
                 <div className={"form"}>
                     <h2 className={"login_heading"}>Đăng nhập</h2>
