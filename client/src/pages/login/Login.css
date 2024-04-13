@@ -19,7 +19,7 @@
 }
 
 .form{
-    /*height: 70%;*/
+ /*height: 70%;*/   
     background-color: white;
     padding: 40px 20px;
     border-radius: 10px;
@@ -60,7 +60,7 @@
 }
 
 .user_input{
-    width: 60%;
+    width: 70%;
     height: 40px;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, .3);
@@ -102,7 +102,7 @@
 }
 
 .password_input{
-    width: 60%;
+    width: 70%;
     height: 40px;
     border-radius: 3px;
     border: 1px solid rgba(0, 0, 0, .3);

@@ -101,7 +101,7 @@ function Document() {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                label="Date"
+                               
                                 variant="outlined"
                                 type="date"
                                 fullWidth
