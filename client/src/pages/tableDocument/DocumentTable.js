@@ -19,9 +19,33 @@ function Document() {
     }, []);
 
     const handleSearch = () => {
-        // Your search logic here
+        const filteredDocuments = documents.filter(document => {
+            const conditions = [];
+            if (symbolNumber) conditions.push(document.symbolNumber.includes(symbolNumber));
+            if (field) conditions.push(document.field.includes(field));
+            if (date) conditions.push(document.date.includes(date));
+            if (searchTerm) conditions.push(document.describeOfDoc.includes(searchTerm));
+    
+            return conditions.length === 0 || conditions.every(condition => condition);
+        });
+    
+
+        const uniqueDocuments = Array.from(new Set(filteredDocuments.map(doc => doc.idDocument))).map(id => {
+            return filteredDocuments.find(doc => doc.idDocument === id);
+        });
+    
+
+        setDocuments(uniqueDocuments);
     };
-    const handleDetail = (documentId) => {
+    
+    const handleVersion = (symbolNumber) => {
+        const filteredDocuments = documents.filter(document => {
+            return (
+                document.symbolNumber.includes(symbolNumber)
+            );
+        });
+        
+        setDocuments(filteredDocuments);
     
     };
   
@@ -52,6 +76,10 @@ function Document() {
     const cancelDeleteHandler = () => {
         setDocumentToDelete(null);
         setConfirmDelete(false);
+    };
+    const handleReload =() =>{
+        window.location.reload();
+
     };
 
     return (
@@ -132,10 +160,11 @@ function Document() {
                     </Grid>
                 </Grid>
                 <Grid item xs={12}>
-                    <Button variant="contained" onClick={handleSearch}>Search</Button>
+                    <Button variant="contained" style={{margin:"10px"}} onClick={handleSearch}>Search</Button>
                 </Grid>
             </Grid>
             <h2>All Documents</h2>
+            <Button variant="contained" color="primary" style={{margin:"10px"}} size="small" onClick={() => handleReload()}>Reaload</Button>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
@@ -143,9 +172,10 @@ function Document() {
                             <TableCell><strong style={{ color: 'blue' }}>Symbol Number</strong></TableCell>
                             <TableCell><strong style={{ color: 'green' }}>Date</strong></TableCell>
                             <TableCell><strong style={{ color: 'red' }}>Description</strong></TableCell>
+                            <TableCell><strong style={{ color: 'black' }}>Version</strong></TableCell>
                             <TableCell><strong style={{ color: 'purple' }}>Issuing Authority</strong></TableCell>
                             <TableCell><strong style={{ color: 'orange' }}>Field</strong></TableCell>
-                            <TableCell><strong style={{ color: 'teal' }}>File URL</strong></TableCell>
+    
                             <TableCell><strong>Action</strong></TableCell>
                         </TableRow>
                     </TableHead>
@@ -154,14 +184,15 @@ function Document() {
                             <TableRow key={document.idDocument} style={{ background: index % 2 === 0 ? '#f5f5f5' : 'white' }}>
                                 <TableCell>{document.symbolNumber}</TableCell>
                                 <TableCell>{document.date}</TableCell>
-                                <TableCell>{document.describeOfDoc}</TableCell>
+                                <TableCell>
+                                    <p>{document.describeOfDoc}</p>
+                                    <a href={document.fileUrl} target="_blank" rel="noopener noreferrer">{document.fileUrl}</a>
+                                </TableCell>
+                                <TableCell>{document.version}</TableCell>
                                 <TableCell>{document.issuingAuthority}</TableCell>
                                 <TableCell>{document.field}</TableCell>
                                 <TableCell>
-                                    <a href={document.fileUrl} target="_blank" rel="noopener noreferrer">{document.fileUrl}</a>
-                                </TableCell>
-                                <TableCell>
-                                  <Button variant="contained" color="primary" size="small" sx={{ marginRight: '5px' }} onClick={() => handleDetail(document.idDocument)}>Detail</Button>
+                                <Button variant="contained" style={{margin: "10px"}} color="primary" size="small" onClick={() => handleVersion(document.symbolNumber)}>All Version</Button>
                                   <Button variant="contained" color="secondary" size="small" onClick={() => handleDelete(document.idDocument)}>Delete</Button>
                                 </TableCell>
                             </TableRow>
