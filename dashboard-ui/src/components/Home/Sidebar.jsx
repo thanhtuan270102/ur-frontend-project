@@ -35,10 +35,10 @@ const Sidebar = () => {
       <ul>
         <li> <a href="/Home">Quản lý văn bản</a></li>
         <li> <a href="/CreateDocument">Thêm văn bản</a></li>
-        <li>Duyệt văn bản</li>
+        <li><a href="/DuyetDocument">Duyệt văn bản</a></li>
         <li>Ban hành văn bản</li>
         <li>Hoạt động</li>
-        <li>Quản lý người dùng</li>
+        <li> <a href="/Users">Quản lý người dùng</a></li>
       </ul>
       <div className="profile">
         <img src="https://i.pinimg.com/564x/79/84/69/7984693f5dba425a90ab79c86ab584a0.jpg" alt="profile" />

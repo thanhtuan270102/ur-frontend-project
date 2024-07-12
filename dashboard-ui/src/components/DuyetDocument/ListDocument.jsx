@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import './TaskList.css';
+import './ListDocument.css';
 import api from '../Service/Api';
-import datas from '../Service/Data';
 import { ToastContainer, toast } from 'react-toastify';
-import axios from 'axios';
 import 'react-toastify/dist/ReactToastify.css';
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 
 
-const TaskList = () => {
+const ListDocument = () => {
   const [docs, setDocs] = useState([]);
   const [filteredDocs, setFilteredDocs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState({
-    field:'Field Name',
+    field:'CREATE',
     symbolNumber: '',
     description: '',
     createdAt: ''
@@ -111,6 +109,50 @@ const TaskList = () => {
     const [year, month, day, hour, minute, second] = dateArray;
     return new Date(Date.UTC(year, month - 1, day, hour, minute, second)).toLocaleDateString();
   };
+  const handleApprove = async (doc) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const updatedDoc = { ...doc, field: 'Field Name' };
+      await api.put(`/doc/update/${doc.id}`, updatedDoc, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      setDocs(prevDocs => prevDocs.map(d => d.id === doc.id ? updatedDoc : d));
+      setFilteredDocs(prevFilteredDocs => prevFilteredDocs.map(d => d.id === doc.id ? updatedDoc : d));
+
+      toast.success('Tài liệu đã được duyệt thành công!');
+    } catch (error) {
+      setError(error.message);
+      toast.error('Có lỗi xảy ra khi duyệt tài liệu!');
+    }
+  };
+  const handleFileView = async (filePath) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await api.get(`/doc/file/${filePath}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      // Xử lý việc mở file ở đây, ví dụ như mở file trong tab mới
+      window.open(response.data.url, '_blank');
+    } catch (error) {
+      setError(error.message);
+      toast.error('Có lỗi xảy ra khi xem tài liệu!');
+    }
+  };
+
 
 
   if (loading) {
@@ -120,24 +162,15 @@ const TaskList = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
-
   
+
+
 
   return (
     <div className="task-list">
       <ToastContainer />
-      <div className="filters">
-        <h3 className="filters-title">Tìm kiếm</h3>
-        <label>
-          Số ký hiệu:
-          <input type="text" name="symbolNumber" value={filter.symbolNumber} onChange={handleFilterChange} />
-        </label>
-        <label>
-          Mô tả:
-          <input type="text" name="description" value={filter.description} onChange={handleFilterChange} />
-        </label>
-      </div>
-      <h2>Quản lý văn bản</h2>
+
+      <h2>Duyệt văn bản</h2>
       <table>
         <thead>
           <tr>
@@ -148,12 +181,14 @@ const TaskList = () => {
             <th>Được tạo vào</th>
             <th>Phiên bản</th>
             <th>Hành động</th>
+            <th>Hành động</th>
           </tr>
         </thead>
         <tbody>
           {filteredDocs.length > 0 ? (
             filteredDocs.map(doc => (
               <React.Fragment key={doc.id}>
+
                 <tr>
                   <td>{doc.symbolNumber}</td>
                   <td>{doc.describeOfDoc}</td>
@@ -166,7 +201,7 @@ const TaskList = () => {
                         {doc.versions.map(version => (
                           <li key={version.id}>
                             Version {version.versionNumber} by {version.createdBy.fullName} on {formatDate(version.createdAt)} <br/>
-                            File Path: <a href={version.filePath} target="_blank" rel="noopener noreferrer">{version.filePath}</a>
+                            File Path: <a href="#" onClick={() => handleFileView(version.filePath)}>{version.filePath}</a>
                           </li>
                         ))}
                       </ul>
@@ -176,6 +211,9 @@ const TaskList = () => {
                   </td>
                   <td>
                     <button className="button" onClick={() => handleClickOpen(doc)}>Xóa</button>
+                  </td>
+                  <td>
+                  <button className="button" onClick={() => handleApprove(doc)}>Duyệt văn bản</button>
                   </td>
                 </tr>
               </React.Fragment>
@@ -207,4 +245,4 @@ const TaskList = () => {
   );
 };
 
-export default TaskList;
+export default ListDocument;
