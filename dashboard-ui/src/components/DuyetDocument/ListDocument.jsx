@@ -144,8 +144,6 @@ const ListDocument = () => {
           'Authorization': `Bearer ${token}`
         }
       });
-
-      // Xử lý việc mở file ở đây, ví dụ như mở file trong tab mới
       window.open(response.data.url, '_blank');
     } catch (error) {
       setError(error.message);
