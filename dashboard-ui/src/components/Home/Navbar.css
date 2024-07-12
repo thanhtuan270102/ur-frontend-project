@@ -1,0 +1,45 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .navbar img {
+    padding: 10px;
+    width: auto;
+    height: 22px;
+  }
+  
+  .user-options button {
+    margin-left: 10px;
+    padding: 10px 20px;
+  }
+
+  .user-options {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .login-button {
+    background-color: #4CAF50; /* Màu nền */
+    border: none; /* Bỏ viền */
+    color: white; /* Màu chữ */
+    padding: 15px 32px; /* Khoảng cách padding */
+    text-align: center; /* Căn giữa chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    display: inline-block; /* Hiển thị dưới dạng block-inline */
+    font-size: 16px; /* Kích thước chữ */
+    margin: 4px 2px; /* Khoảng cách margin */
+    cursor: pointer; /* Đổi con trỏ thành hình tay */
+    border-radius: 12px; /* Bo tròn góc */
+    transition-duration: 0.4s; /* Thời gian chuyển tiếp */
+  }
+  
+  .login-button:hover {
+    background-color: white; /* Đổi màu nền khi hover */
+    color: black; /* Đổi màu chữ khi hover */
+  }
+  
