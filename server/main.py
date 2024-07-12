@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+import pandas as pd
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 CORS(app)
