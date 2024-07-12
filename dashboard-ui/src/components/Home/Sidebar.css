@@ -1,0 +1,40 @@
+.sidebar {
+    width: 250px;
+    background-color: #f8f9fa;
+    padding: 20px;
+  }
+  
+  .logo h2 {
+    margin-bottom: 20px;
+  }
+  
+  .sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px 0;
+    cursor: pointer;
+  }
+  .sidebar ul li a{
+    padding: 10px 0;
+    cursor: pointer;
+    color: #f8f9fa;
+    text-decoration: none;
+  }
+  
+  
+  .profile {
+    margin-top: auto;
+    text-align: center;
+  }
+  
+  .profile img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    image-rendering: pixelated;
+    margin-bottom: 10px;
+  }

@@ -1,0 +1,15 @@
+.productivity-chart {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    flex: 1;
+  }
+  
+  .chart-placeholder {
+    height: 200px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
