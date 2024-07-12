@@ -1,0 +1,32 @@
+.header {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: azure;
+    border-bottom: 1px solid #ddd;
+  }
+  .search{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+  }
+  .img{
+    background-color: azure;
+    font-size: 8px;
+  }
+  .img img{
+    width: max-content;
+    height: auto; 
+  }
+  
+  .search-input {
+    flex: 1;
+    margin: 0 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  

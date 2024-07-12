@@ -134,23 +134,20 @@ const ListDocument = () => {
   };
   const handleFileView = async (filePath) => {
     try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('No token found');
-      }
 
       const response = await api.get(`/doc/file/${filePath}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
+       responseType:'blob'
       });
-      window.open(response.data.url, '_blank');
+      const blob = new Blob([response.data],{type:response.headers['content-Type'] });
+      const url = window.URL.createObjectURL(blob);
+      
+      const newwindow=  window.open(url, '_blank');
+      window.open(response.data.url,'_blank')
     } catch (error) {
       setError(error.message);
       toast.error('Có lỗi xảy ra khi xem tài liệu!');
     }
   };
-
 
 
   if (loading) {

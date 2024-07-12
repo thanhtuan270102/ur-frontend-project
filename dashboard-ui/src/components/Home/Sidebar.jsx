@@ -14,7 +14,7 @@ const Sidebar = () => {
         if (!token) {
           throw new Error('No token found');
         }
-        const response = await api.post('/users/details', {
+        const response = await api.post('/users/details',{}, {
           headers: {
             Authorization: `Bearer ${token}`
           }
