@@ -112,6 +112,26 @@ const TaskList = () => {
     return new Date(Date.UTC(year, month - 1, day, hour, minute, second)).toLocaleDateString();
   };
 
+  const handleFileView = async (filePath) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+
+      const response = await api.get(`/doc/file/${filePath}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      window.open(response.data.url, '_blank');
+    } catch (error) {
+      setError(error.message);
+      toast.error('Có lỗi xảy ra khi xem tài liệu!');
+    }
+  };
+
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -166,7 +186,7 @@ const TaskList = () => {
                         {doc.versions.map(version => (
                           <li key={version.id}>
                             Version {version.versionNumber} by {version.createdBy.fullName} on {formatDate(version.createdAt)} <br/>
-                            File Path: <a href={version.filePath} target="_blank" rel="noopener noreferrer">{version.filePath}</a>
+                            File Path: <a href="#" onClick={() => handleFileView(version.filePath)}>{version.filePath}</a>
                           </li>
                         ))}
                       </ul>
