@@ -8,11 +8,12 @@ const ProductivityChart = () => {
   const [filteredDocs, setFilteredDocs] = useState([]);
 
   useEffect(() => {
-    // Fetch dữ liệu từ API hoặc đặt dữ liệu mẫu
+
     const fetchDocs = async () => {
-      const response = await api.get('/doc/getAll'); // Thay bằng API thực tế
-      setDocs(response.data);
-      setFilteredDocs(response.data);
+      const response = await api.get('/doc/getAll'); 
+      const filteredData = response.data.filter(doc => doc.field === 'Field Name');
+      setDocs(filteredData);
+      setFilteredDocs(filteredData);
     };
 
     fetchDocs();
@@ -29,6 +30,10 @@ const ProductivityChart = () => {
       console.error('Error:', error);
     }
   };
+  const formatDate = (dateArray) => {
+    const [year, month, day, hour, minute, second] = dateArray;
+    return new Date(Date.UTC(year, month - 1, day, hour, minute, second)).toLocaleDateString();
+  };
   return (
     <div className="task-list">
     <button onClick={handleCluster}>Cluster Documents</button>
@@ -38,7 +43,7 @@ const ProductivityChart = () => {
           <th>Số ký hiệu</th>
           <th>Mô tả</th>
           <th>Được tạo vào</th>
-          <th>Hành động</th>
+           
           <th>Cụm</th>
         </tr>
       </thead>
@@ -48,10 +53,7 @@ const ProductivityChart = () => {
             <tr key={doc.id}>
               <td>{doc.symbolNumber}</td>
               <td>{doc.describeOfDoc}</td>
-              <td>{doc.createdAt}</td>
-              <td>
-                <button className="button">Xóa</button>
-              </td>
+              <td>{formatDate(doc.createdAt)}</td>
               <td>{doc.cluster}</td>
             </tr>
           ))
